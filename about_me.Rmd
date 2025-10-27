@@ -1,0 +1,15 @@
+---
+title: "Experiences"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Academic
+
+I'm a second year MPH student at the Mailman School of Public Health. I'm studying Sociomedical Sciences, with a certificate in Applied Biostatistics and Public Health Data Science. 
+
+# Professional
+
+Work experience. 
