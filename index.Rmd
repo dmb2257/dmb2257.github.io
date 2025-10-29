@@ -6,7 +6,7 @@ output:
     toc_float: true
 ---
 
-# INTRODUCTION
+# Overview
 
 Welcome to Diane's Personal Website! Throughout this website you can learn more about my interests, academic background, and professional experiences. 
 
@@ -16,7 +16,7 @@ Welcome to Diane's Personal Website! Throughout this website you can learn more 
 My name is Diane and I'm a second year MPH student at the Mailman School of Public Health. I'm studying Sociomedical Sciences, with a certificate in Applied Biostatistics and Public Health Data Science. 
 
 
-# MY EXPERIENCES
+## My Experiences
 
 Visit the [Experiences](about_me.html) page to learn more about my academic and professional experiences!
 

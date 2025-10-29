@@ -7,10 +7,14 @@ navbar:
       href: index.html
     - text: "Experiences"
       href: about_me.html
+    - text: "Plotly Plots"
+      href: plotly.html
+    - text: "Flexdashboard"
+      href: flexdashboard2.html
     - icon: fa-envelope fa-lg
       href: mailto:<dmb2257@cumc.columbia.edu>
     - icon: fa-github fa-lg
       href: http://github.com/dmb2257/
 output:
   html_document:
-    theme: sandstone
+    theme: flatly

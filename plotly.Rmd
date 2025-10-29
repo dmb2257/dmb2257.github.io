@@ -6,17 +6,58 @@ output:
     toc_float: true
 ---
 
-#Plotly
+# Plotly
+## Loading Packages
 This code chunk loads the necessary packages.
 ```{r}
 library(tidyverse)
-library(readxl)
 library(janitor)
 library(p8105.datasets)
+library(plotly)
+```
+
+## Creating Dataframe
+This loads the NYC Restaurant Inspections dataset. Since this is a large dataset, I will be creating a data frame using a smaller sample consisting of data from Staten Island in 2019.  
+```{r}
+rest_inspec_df=
+  rest_inspec |>
+  janitor::clean_names()|>
+  filter(str_detect(grade_date, "2019"))|>
+  filter(boro %in% c("Staten Island"))
 ```
 
 
-```{r}
+## Bar Chart
 
+The code below creates a bar chart of the frequency of each grade, A, B, and C, in Staten Island. The grades are ordered by descending grade.
+```{r}
+rest_inspec_df|>
+  filter(grade %in% c("A", "B", "C"))|>
+  count(grade) |>
+  mutate(grade = fct_reorder(grade, c("A", "B", "C")))|>
+  plot_ly(x = ~grade, y = ~n, color = ~grade, type = "bar")|>
+  layout(title = "2019 Inspection Grades in Staten Island",
+         xaxis = list(title ="Grade"),
+         yaxis = list(title = "Count"))
+  
+```
+
+## Scatterplot
+This code chunk produces an interactive scatterplot of the locations of restaurants inspected in the zipcode "10307" in Staten Island in 2019. The data was grouped by camis, so each restaurant would only listed once. Each plotted point contains the location of one restaurant and the label includes the restaurant identifier, name of business, and type of cuisine. The type of cuisine is also distinguished by color, with a legend to the right side of the plot. The x axis contains the latitude and the y axis contains the longitude.
+```{r}
+rest_inspec_df |>
+  drop_na(latitude, longitude)|>
+  filter(latitude != "0")|>
+  filter(zipcode == "10307")|>
+  group_by(camis)|>
+  mutate(
+    text_label = str_c("Restauraunt Identifier: ", camis, "\nName of Business: ", dba,
+      "\nType of Cuisine: ", cuisine_description)
+    )|>
+  plot_ly(
+    x = ~latitude, y = ~longitude, 
+    text = ~text_label, color = ~cuisine_description, 
+    type = "scatter", colors = "viridis", mode = "markers", alpha = 0.5)|>
+  layout(title = "Location of Restauraunts in Inspected in 2019")
 ```
 

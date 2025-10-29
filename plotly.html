@@ -16,7 +16,7 @@
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -35,6 +35,14 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.11.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
@@ -330,6 +338,12 @@ div.tocify {
   <a href="about_me.html">Experiences</a>
 </li>
 <li>
+  <a href="plotly.html">Plotly Plots</a>
+</li>
+<li>
+  <a href="flexdashboard2.html">Flexdashboard</a>
+</li>
+<li>
   <a href="mailto:&lt;dmb2257@cumc.columbia.edu&gt;">
     <span class="fa fa-envelope fa-lg"></span>
      
@@ -355,16 +369,71 @@ div.tocify {
 </div>
 
 
-<p>#Plotly This code chunk loads the necessary packages.</p>
+<div id="plotly" class="section level1">
+<h1>Plotly</h1>
+<div id="loading-packages" class="section level2">
+<h2>Loading Packages</h2>
+<p>This code chunk loads the necessary packages.</p>
 <pre class="r"><code>library(tidyverse)
-library(readxl)
-library(janitor)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;janitor&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     chisq.test, fisher.test</code></pre>
-<pre class="r"><code>library(p8105.datasets)</code></pre>
+library(janitor)
+library(p8105.datasets)
+library(plotly)</code></pre>
+</div>
+<div id="creating-dataframe" class="section level2">
+<h2>Creating Dataframe</h2>
+<p>This loads the NYC Restaurant Inspections dataset. Since this is a
+large dataset, I will be creating a data frame using a smaller sample
+consisting of data from Staten Island in 2019.</p>
+<pre class="r"><code>rest_inspec_df=
+  rest_inspec |&gt;
+  janitor::clean_names()|&gt;
+  filter(str_detect(grade_date, &quot;2019&quot;))|&gt;
+  filter(boro %in% c(&quot;Staten Island&quot;))</code></pre>
+</div>
+<div id="bar-chart" class="section level2">
+<h2>Bar Chart</h2>
+<p>The code below creates a bar chart of the frequency of each grade, A,
+B, and C, in Staten Island. The grades are ordered by descending
+grade.</p>
+<pre class="r"><code>rest_inspec_df|&gt;
+  filter(grade %in% c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;))|&gt;
+  count(grade) |&gt;
+  mutate(grade = fct_reorder(grade, c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;)))|&gt;
+  plot_ly(x = ~grade, y = ~n, color = ~grade, type = &quot;bar&quot;)|&gt;
+  layout(title = &quot;2019 Inspection Grades in Staten Island&quot;,
+         xaxis = list(title =&quot;Grade&quot;),
+         yaxis = list(title = &quot;Count&quot;))</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-9000767cbcd4d551e5b5" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-9000767cbcd4d551e5b5">{"x":{"visdat":{"2698414e18c9":["function () ","plotlyVisDat"]},"cur_data":"2698414e18c9","attrs":{"2698414e18c9":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"2019 Inspection Grades in Staten Island","xaxis":{"domain":[0,1],"automargin":true,"title":"Grade","type":"category","categoryorder":"array","categoryarray":["A","B","C"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Count"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["A"],"y":[1678],"type":"bar","name":"A","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["B"],"y":[190],"type":"bar","name":"B","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["C"],"y":[56],"type":"bar","name":"C","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="scatterplot" class="section level2">
+<h2>Scatterplot</h2>
+<p>This code chunk produces an interactive scatterplot of the locations
+of restaurants inspected in the zipcode “10307” in Staten Island in
+2019. The data was grouped by camis, so each restaurant would only
+listed once. Each plotted point contains the location of one restaurant
+and the label includes the restaurant identifier, name of business, and
+type of cuisine. The type of cuisine is also distinguished by color,
+with a legend to the right side of the plot. The x axis contains the
+latitude and the y axis contains the longitude.</p>
+<pre class="r"><code>rest_inspec_df |&gt;
+  drop_na(latitude, longitude)|&gt;
+  filter(latitude != &quot;0&quot;)|&gt;
+  filter(zipcode == &quot;10307&quot;)|&gt;
+  group_by(camis)|&gt;
+  mutate(
+    text_label = str_c(&quot;Restauraunt Identifier: &quot;, camis, &quot;\nName of Business: &quot;, dba,
+      &quot;\nType of Cuisine: &quot;, cuisine_description)
+    )|&gt;
+  plot_ly(
+    x = ~latitude, y = ~longitude, 
+    text = ~text_label, color = ~cuisine_description, 
+    type = &quot;scatter&quot;, colors = &quot;viridis&quot;, mode = &quot;markers&quot;, alpha = 0.5)|&gt;
+  layout(title = &quot;Location of Restauraunts in Inspected in 2019&quot;)</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-6eaec1a20304cac66e1f" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-6eaec1a20304cac66e1f">{"x":{"visdat":{"26988875bcb":["function () ","plotlyVisDat"]},"cur_data":"26988875bcb","attrs":{"26988875bcb":{"x":{},"y":{},"text":{},"mode":"markers","color":{},"colors":"viridis","alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Location of Restauraunts in Inspected in 2019","xaxis":{"domain":[0,1],"automargin":true,"title":"latitude"},"yaxis":{"domain":[0,1],"automargin":true,"title":"longitude"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[40.514922866515001,40.514789699494003,40.518395480616,40.509828880873002,40.514922866515001,40.514789699494003,40.509828880873002,40.514789699494003,40.514358282681997,40.515842237008002,40.515842237008002,40.518395480616,40.514789699494003,40.515842237008002,40.514789699494003,40.515842237008002],"y":[-74.242662666933001,-74.248434473464002,-74.234561306930004,-74.247610425584,-74.242662666933001,-74.248434473464002,-74.247610425584,-74.248434473464002,-74.235697941723004,-74.233502136327999,-74.233502136327999,-74.234561306930004,-74.248434473464002,-74.233502136327999,-74.248434473464002,-74.233502136327999],"text":["Restauraunt Identifier: 41347039<br />Name of Business: E.J. MICHAEL'S<br />Type of Cuisine: American","Restauraunt Identifier: 50034673<br />Name of Business: WATERSIDE BAR & RESTAURANT<br />Type of Cuisine: American","Restauraunt Identifier: 50060685<br />Name of Business: BURGER KING<br />Type of Cuisine: American","Restauraunt Identifier: 41387166<br />Name of Business: B & E NEIGHBORHOOD PUB<br />Type of Cuisine: American","Restauraunt Identifier: 41347039<br />Name of Business: E.J. MICHAEL'S<br />Type of Cuisine: American","Restauraunt Identifier: 50034673<br />Name of Business: WATERSIDE BAR & RESTAURANT<br />Type of Cuisine: American","Restauraunt Identifier: 41387166<br />Name of Business: B & E NEIGHBORHOOD PUB<br />Type of Cuisine: American","Restauraunt Identifier: 50034673<br />Name of Business: WATERSIDE BAR & RESTAURANT<br />Type of Cuisine: American","Restauraunt Identifier: 41008928<br />Name of Business: ALOYSIA'S LOUNGE<br />Type of Cuisine: American","Restauraunt Identifier: 50058597<br />Name of Business: TIM HORTON'S<br />Type of Cuisine: American","Restauraunt Identifier: 50080247<br />Name of Business: W'S BAR AND RESTAURANT<br />Type of Cuisine: American","Restauraunt Identifier: 50060685<br />Name of Business: BURGER KING<br />Type of Cuisine: American","Restauraunt Identifier: 50034673<br />Name of Business: WATERSIDE BAR & RESTAURANT<br />Type of Cuisine: American","Restauraunt Identifier: 50058597<br />Name of Business: TIM HORTON'S<br />Type of Cuisine: American","Restauraunt Identifier: 50034673<br />Name of Business: WATERSIDE BAR & RESTAURANT<br />Type of Cuisine: American","Restauraunt Identifier: 50080247<br />Name of Business: W'S BAR AND RESTAURANT<br />Type of Cuisine: American"],"mode":"markers","type":"scatter","name":"American","marker":{"color":"rgba(68,1,84,0.5)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,0.5)"},"error_y":{"color":"rgba(68,1,84,0.5)"},"error_x":{"color":"rgba(68,1,84,0.5)"},"line":{"color":"rgba(68,1,84,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.510634177495,40.518121142468999,40.518121142468999],"y":[-74.248383010455996,-74.234492004817994,-74.234492004817994],"text":["Restauraunt Identifier: 50078660<br />Name of Business: MAIN STREET COFFEE<br />Type of Cuisine: Café/Coffee/Tea","Restauraunt Identifier: 41266866<br />Name of Business: E SQUARED CAFE<br />Type of Cuisine: Café/Coffee/Tea","Restauraunt Identifier: 41266866<br />Name of Business: E SQUARED CAFE<br />Type of Cuisine: Café/Coffee/Tea"],"mode":"markers","type":"scatter","name":"Café/Coffee/Tea","marker":{"color":"rgba(72,33,115,0.5)","line":{"color":"rgba(72,33,115,1)"}},"textfont":{"color":"rgba(72,33,115,0.5)"},"error_y":{"color":"rgba(72,33,115,0.5)"},"error_x":{"color":"rgba(72,33,115,0.5)"},"line":{"color":"rgba(72,33,115,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.518121142468999,40.518121142468999,40.518121142468999,40.510623221804998,40.512303565342002,40.512303565342002,40.518121142468999,40.510623221804998,40.518121142468999],"y":[-74.234492004817994,-74.234492004817994,-74.234492004817994,-74.248372180941999,-74.239114355509003,-74.239114355509003,-74.234492004817994,-74.248372180941999,-74.234492004817994],"text":["Restauraunt Identifier: 50082888<br />Name of Business: PEKING TASTE<br />Type of Cuisine: Chinese","Restauraunt Identifier: 50082888<br />Name of Business: PEKING TASTE<br />Type of Cuisine: Chinese","Restauraunt Identifier: 50082888<br />Name of Business: PEKING TASTE<br />Type of Cuisine: Chinese","Restauraunt Identifier: 41436344<br />Name of Business: KIM'S ISLAND CHINESE RESTAURANT<br />Type of Cuisine: Chinese","Restauraunt Identifier: 50088487<br />Name of Business: CHEF'S HONG II LI FAMILY RESTAURANT<br />Type of Cuisine: Chinese","Restauraunt Identifier: 50088487<br />Name of Business: CHEF'S HONG II LI FAMILY RESTAURANT<br />Type of Cuisine: Chinese","Restauraunt Identifier: 50082888<br />Name of Business: PEKING TASTE<br />Type of Cuisine: Chinese","Restauraunt Identifier: 41436344<br />Name of Business: KIM'S ISLAND CHINESE RESTAURANT<br />Type of Cuisine: Chinese","Restauraunt Identifier: 50082888<br />Name of Business: PEKING TASTE<br />Type of Cuisine: Chinese"],"mode":"markers","type":"scatter","name":"Chinese","marker":{"color":"rgba(67,62,133,0.5)","line":{"color":"rgba(67,62,133,1)"}},"textfont":{"color":"rgba(67,62,133,0.5)"},"error_y":{"color":"rgba(67,62,133,0.5)"},"error_x":{"color":"rgba(67,62,133,0.5)"},"line":{"color":"rgba(67,62,133,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.517668540827003,40.517668540827003],"y":[-74.234350143807006,-74.234350143807006],"text":["Restauraunt Identifier: 40992090<br />Name of Business: MCDONALD'S<br />Type of Cuisine: Hamburgers","Restauraunt Identifier: 40992090<br />Name of Business: MCDONALD'S<br />Type of Cuisine: Hamburgers"],"mode":"markers","type":"scatter","name":"Hamburgers","marker":{"color":"rgba(56,89,140,0.5)","line":{"color":"rgba(56,89,140,1)"}},"textfont":{"color":"rgba(56,89,140,0.5)"},"error_y":{"color":"rgba(56,89,140,0.5)"},"error_x":{"color":"rgba(56,89,140,0.5)"},"line":{"color":"rgba(56,89,140,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.518121142468999,40.516647001723001],"y":[-74.234492004817994,-74.233238813924004],"text":["Restauraunt Identifier: 50088375<br />Name of Business: CARVEL 102664<br />Type of Cuisine: Ice Cream, Gelato, Yogurt, Ices","Restauraunt Identifier: 50088879<br />Name of Business: UNCLE LOUIE G<br />Type of Cuisine: Ice Cream, Gelato, Yogurt, Ices"],"mode":"markers","type":"scatter","name":"Ice Cream, Gelato, Yogurt, Ices","marker":{"color":"rgba(45,112,142,0.5)","line":{"color":"rgba(45,112,142,1)"}},"textfont":{"color":"rgba(45,112,142,0.5)"},"error_y":{"color":"rgba(45,112,142,0.5)"},"error_x":{"color":"rgba(45,112,142,0.5)"},"line":{"color":"rgba(45,112,142,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.511011068362002,40.510917335240997,40.511011068362002,40.511140718653003,40.510917335240997,40.511140718653003],"y":[-74.241580331186995,-74.241774187822003,-74.241580331186995,-74.241275120560005,-74.241774187822003,-74.241275120560005],"text":["Restauraunt Identifier: 50000204<br />Name of Business: DANI'S<br />Type of Cuisine: Italian","Restauraunt Identifier: 41636059<br />Name of Business: REGGIANO'S BRICK OVEN PIZZA<br />Type of Cuisine: Italian","Restauraunt Identifier: 50000204<br />Name of Business: DANI'S<br />Type of Cuisine: Italian","Restauraunt Identifier: 50007663<br />Name of Business: DELUCA'S ITALIAN RESTAURANT<br />Type of Cuisine: Italian","Restauraunt Identifier: 41636059<br />Name of Business: REGGIANO'S BRICK OVEN PIZZA<br />Type of Cuisine: Italian","Restauraunt Identifier: 50007663<br />Name of Business: DELUCA'S ITALIAN RESTAURANT<br />Type of Cuisine: Italian"],"mode":"markers","type":"scatter","name":"Italian","marker":{"color":"rgba(37,133,142,0.5)","line":{"color":"rgba(37,133,142,1)"}},"textfont":{"color":"rgba(37,133,142,0.5)"},"error_y":{"color":"rgba(37,133,142,0.5)"},"error_x":{"color":"rgba(37,133,142,0.5)"},"line":{"color":"rgba(37,133,142,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.518121142468999,40.518121142468999],"y":[-74.234492004817994,-74.234492004817994],"text":["Restauraunt Identifier: 50016861<br />Name of Business: MIZU HIBACHI JAPANESE FUSION<br />Type of Cuisine: Japanese","Restauraunt Identifier: 50016861<br />Name of Business: MIZU HIBACHI JAPANESE FUSION<br />Type of Cuisine: Japanese"],"mode":"markers","type":"scatter","name":"Japanese","marker":{"color":"rgba(30,155,138,0.5)","line":{"color":"rgba(30,155,138,1)"}},"textfont":{"color":"rgba(30,155,138,0.5)"},"error_y":{"color":"rgba(30,155,138,0.5)"},"error_x":{"color":"rgba(30,155,138,0.5)"},"line":{"color":"rgba(30,155,138,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.515842237008002,40.515842237008002,40.509114645765997,40.509114645765997,40.509114645765997,40.509114645765997,40.509114645765997],"y":[-74.233502136327999,-74.233502136327999,-74.246611640257001,-74.246611640257001,-74.246611640257001,-74.246611640257001,-74.246611640257001],"text":["Restauraunt Identifier: 50041007<br />Name of Business: QDOBA MEXICAN GRILL<br />Type of Cuisine: Mexican","Restauraunt Identifier: 50041007<br />Name of Business: QDOBA MEXICAN GRILL<br />Type of Cuisine: Mexican","Restauraunt Identifier: 50065464<br />Name of Business: DON CESAR<br />Type of Cuisine: Mexican","Restauraunt Identifier: 50065464<br />Name of Business: DON CESAR<br />Type of Cuisine: Mexican","Restauraunt Identifier: 50065464<br />Name of Business: DON CESAR<br />Type of Cuisine: Mexican","Restauraunt Identifier: 50065464<br />Name of Business: DON CESAR<br />Type of Cuisine: Mexican","Restauraunt Identifier: 50065464<br />Name of Business: DON CESAR<br />Type of Cuisine: Mexican"],"mode":"markers","type":"scatter","name":"Mexican","marker":{"color":"rgba(43,176,127,0.5)","line":{"color":"rgba(43,176,127,1)"}},"textfont":{"color":"rgba(43,176,127,0.5)"},"error_y":{"color":"rgba(43,176,127,0.5)"},"error_x":{"color":"rgba(43,176,127,0.5)"},"line":{"color":"rgba(43,176,127,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.513368808084998,40.513368808084998,40.513368808084998,40.513368808084998,40.513368808084998,40.513368808084998],"y":[-74.248011994498995,-74.248011994498995,-74.248011994498995,-74.248011994498995,-74.248011994498995,-74.248011994498995],"text":["Restauraunt Identifier: 40542345<br />Name of Business: TOWNE DELI & PIZZA<br />Type of Cuisine: Pizza","Restauraunt Identifier: 40542345<br />Name of Business: TOWNE DELI & PIZZA<br />Type of Cuisine: Pizza","Restauraunt Identifier: 40542345<br />Name of Business: TOWNE DELI & PIZZA<br />Type of Cuisine: Pizza","Restauraunt Identifier: 40542345<br />Name of Business: TOWNE DELI & PIZZA<br />Type of Cuisine: Pizza","Restauraunt Identifier: 40542345<br />Name of Business: TOWNE DELI & PIZZA<br />Type of Cuisine: Pizza","Restauraunt Identifier: 40542345<br />Name of Business: TOWNE DELI & PIZZA<br />Type of Cuisine: Pizza"],"mode":"markers","type":"scatter","name":"Pizza","marker":{"color":"rgba(81,196,106,0.5)","line":{"color":"rgba(81,196,106,1)"}},"textfont":{"color":"rgba(81,196,106,0.5)"},"error_y":{"color":"rgba(81,196,106,0.5)"},"error_x":{"color":"rgba(81,196,106,0.5)"},"line":{"color":"rgba(81,196,106,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.509175348928999,40.518121142468999,40.518121142468999,40.515842237008002,40.509938354044998,40.509175348928999,40.509938354044998,40.518121142468999,40.515842237008002,40.509938354044998],"y":[-74.246464423267,-74.234492004817994,-74.234492004817994,-74.233502136327999,-74.243928342702006,-74.246464423267,-74.243928342702006,-74.234492004817994,-74.233502136327999,-74.243928342702006],"text":["Restauraunt Identifier: 41036469<br />Name of Business: VILLAGGIO PIZZERIA RESTAURANT<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 50056280<br />Name of Business: CAMPANIA COAL FIRE PIZZA<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 50056280<br />Name of Business: CAMPANIA COAL FIRE PIZZA<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 40389681<br />Name of Business: VILLA MONTE RESTAURANT & PIZZERIA<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 50067857<br />Name of Business: KIKI'S GRAB & GO<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 41036469<br />Name of Business: VILLAGGIO PIZZERIA RESTAURANT<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 50067857<br />Name of Business: KIKI'S GRAB & GO<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 50056280<br />Name of Business: CAMPANIA COAL FIRE PIZZA<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 40389681<br />Name of Business: VILLA MONTE RESTAURANT & PIZZERIA<br />Type of Cuisine: Pizza/Italian","Restauraunt Identifier: 50067857<br />Name of Business: KIKI'S GRAB & GO<br />Type of Cuisine: Pizza/Italian"],"mode":"markers","type":"scatter","name":"Pizza/Italian","marker":{"color":"rgba(133,213,74,0.5)","line":{"color":"rgba(133,213,74,1)"}},"textfont":{"color":"rgba(133,213,74,0.5)"},"error_y":{"color":"rgba(133,213,74,0.5)"},"error_x":{"color":"rgba(133,213,74,0.5)"},"line":{"color":"rgba(133,213,74,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.516756484818998],"y":[-74.233390252399005],"text":"Restauraunt Identifier: 41421154<br />Name of Business: SUBWAY<br />Type of Cuisine: Sandwiches","mode":"markers","type":"scatter","name":"Sandwiches","marker":{"color":"rgba(194,223,35,0.5)","line":{"color":"rgba(194,223,35,1)"}},"textfont":{"color":"rgba(194,223,35,0.5)"},"error_y":{"color":"rgba(194,223,35,0.5)"},"error_x":{"color":"rgba(194,223,35,0.5)"},"line":{"color":"rgba(194,223,35,0.5)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[40.510669789342998,40.510669789342998],"y":[-74.248415509259004,-74.248415509259004],"text":["Restauraunt Identifier: 50001826<br />Name of Business: TAQUERIA OAXACA<br />Type of Cuisine: Spanish","Restauraunt Identifier: 50001826<br />Name of Business: TAQUERIA OAXACA<br />Type of Cuisine: Spanish"],"mode":"markers","type":"scatter","name":"Spanish","marker":{"color":"rgba(253,231,37,0.5)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,0.5)"},"error_y":{"color":"rgba(253,231,37,0.5)"},"error_x":{"color":"rgba(253,231,37,0.5)"},"line":{"color":"rgba(253,231,37,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
 
 
 
