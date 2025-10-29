@@ -21,9 +21,6 @@ My name is Diane and I'm a second year MPH student at the Mailman School of Publ
 Visit the [Experiences](about_me.html) page to learn more about my academic and professional experiences!
 
 
-Here's a cute dog in a pumpkin! 
-![](files/pumpkin.jpg)
-
 
 
 

@@ -7,31 +7,31 @@ output:
 ---
 
 # Academic Experience
-## Columbia University Mailman School of Public Health
+### Columbia University Mailman School of Public Health
 - Master of Public Health in Sociomedical Sciences. Certificate in Applied Biostatistics and Public Health Data Science (expected May 2026)					            
 - Relevant Coursework: Analysis of Categorical Data, Evaluation of Health Programs, Introduction to SMS Research Methods, Social and Economic Determinants of Health, Research Methods and Applications (Quantitative and Qualitative Research Methods) 
 
-## Syracuse University
+### Syracuse University
 - Bachelor of Arts in Biology. Minor in Psychology (May 2023)
 - Cum laude, Dean’s list   
 
 
 
 # Professional Experience
-## Summit Health Urgent Care
+### Summit Health Urgent Care
 - Medical Scribe (June 2023-Sept. 2023)	
 - Provided detail-oriented documentation for more than 30 charts daily, using Athenahealth EHR. 
 - Demonstrated excellent collaborative skills to collect medical history, chief complaints, and vital signs. 
 - Performed more than 200 rapid point of care tests and accurately recorded test results. 
 - Translated for more than 40 Spanish-speaking patients and family members.  
 
-## Syracuse University Ambulance
+### Syracuse University Ambulance
 - Emergency Medical Technician (Feb. 2020-May 2023) 
 - Completed thorough inspection of the ambulance condition and inventory at the beginning of every shift.  
 - Responded to emergency calls, provided basic life support, documented patient charts, and completed transfer of care to local emergency departments. 
 - Collaborated with other emergency responders including dispatchers, paramedics, and police departments.  
 
-## Comprehensive Cardiac Care
+### Comprehensive Cardiac Care
 - Medical Assistant and Office Receptionist (June 2021-Aug. 2021)
 - Collected patient intake for up to 40 appointments daily, including patient medical history and vital signs. 
 - Conducted EKG’s, applied holter monitors, and prepared patients for stress tests and echocardiograms. 
@@ -40,7 +40,7 @@ output:
 - Utilized strong written and communication skills to deliver high-quality patient services.  
 
 # Volunteer Experience
-## The Food Pantry at Columbia
+### The Food Pantry at Columbia
 - Volunteer (Sept. 2024-Present)
 - Distributes food pantry orders to clients in the Columbia University community.
 

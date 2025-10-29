@@ -6,9 +6,8 @@ output:
     toc_float: true
 ---
 
-# Plotly
 ## Loading Packages
-This code chunk loads the necessary packages.
+This code chunk loads the necessary packages for the codes below.
 ```{r}
 library(tidyverse)
 library(janitor)
@@ -16,8 +15,8 @@ library(p8105.datasets)
 library(plotly)
 ```
 
-## Creating Dataframe
-This loads the NYC Restaurant Inspections dataset. Since this is a large dataset, I will be creating a data frame using a smaller sample consisting of data from Staten Island in 2019.  
+## Creating the Dataframe
+This loads the NYC Restaurant Inspections dataset. Since this is a large dataset, I used a smaller sample in this data frame, consisting of restaurants inspected in Staten Island in 2019.  
 ```{r}
 rest_inspec_df=
   rest_inspec |>
@@ -43,7 +42,7 @@ rest_inspec_df|>
 ```
 
 ## Scatterplot
-This code chunk produces an interactive scatterplot of the locations of restaurants inspected in the zipcode "10307" in Staten Island in 2019. The data was grouped by camis, so each restaurant would only listed once. Each plotted point contains the location of one restaurant and the label includes the restaurant identifier, name of business, and type of cuisine. The type of cuisine is also distinguished by color, with a legend to the right side of the plot. The x axis contains the latitude and the y axis contains the longitude.
+This code chunk produces an interactive scatterplot of the locations of restaurants inspected in the zipcode "10307" in Staten Island in 2019. The data was grouped by the restaurant identifier, "camis", so each restaurant would only listed once. Each plotted point contains the location of one restaurant and the label includes the restaurant identifier, name of business, and type of cuisine. The type of cuisine is also distinguished by color, with a legend to the right side of the plot. The x axis contains the latitude and the y axis contains the longitude.
 ```{r}
 rest_inspec_df |>
   drop_na(latitude, longitude)|>
@@ -61,3 +60,19 @@ rest_inspec_df |>
   layout(title = "Location of Restauraunts in Inspected in 2019")
 ```
 
+
+## Boxplot
+This code chunk produces a boxplot. This shows the distribution of inspection scores based on the type of inspection performed, and grouped by the inspection program. The x axis is the type of inspection performed, the y axis is the score, and the data is grouped by inspection program is distinguished by color.
+```{r}
+rest_inspec_df |>
+  separate(
+    inspection_type, 
+    into = c("inspec_program", "inspec_type"), sep = "/")|>
+  group_by(inspec_type, inspec_program, score)|>
+  plot_ly(x = ~inspec_type, y = ~score,
+         color = ~inspec_program, type = "box", colors = "viridis")|>
+    layout(boxmode = "group", title = "Distribution of Inspection Scores",
+         xaxis = list(title ="Type of Inspection"),
+         yaxis = list(title = "Scores"))
+
+```
