@@ -1,5 +1,5 @@
 ---
-title: "Diane's Personal Website"
+title: "Diane Benites's Personal Website"
 output: 
   html_document:
     toc: true
@@ -8,7 +8,7 @@ output:
 
 # Overview
 
-Welcome to Diane's Personal Website! Throughout this website you can learn more about my interests, academic background, and professional experiences. 
+Welcome to Diane Benites's Personal Website! This website was coded by Diane Benites using R Markdown. Throughout this website you can learn more about my interests, academic background, and professional experiences. 
 
 
 ## About Me
